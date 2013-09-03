@@ -213,6 +213,43 @@ if (MYTABPOS == 'top') {
                         </td>
                     </tr>
 
+                <?php if(I18N_DEFAULT == 'de_DE'): ?>
+                    <tr>
+                        <td class="tdVertical">
+                            <label id="zipLabel" for="zip"><?php _e('Postal Code');?>:</label>
+                        </td>
+                        <td class="tdData">
+                            <input type="text" tabindex="10" name="zip" id="zip" class="inputbox" style="width: 150px" value="<?php if(isset($this->preassignedFields['zip'])) $this->_($this->preassignedFields['zip']); ?>" />&nbsp;
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tdVertical">
+                            <label id="cityLabel" for="city"><?php _e('City');?>:</label>
+                        </td>
+                        <td class="tdData">
+                            <input type="text" tabindex="11" name="city" id="city" class="inputbox" style="width: 150px" value="<?php if(isset($this->preassignedFields['city'])) $this->_($this->preassignedFields['city']); ?>" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tdVertical">
+                            <label id="stateLabel" for="state"><?php _e('State');?>:</label>
+                        </td>
+                        <td class="tdData">
+                            <input type="text" tabindex="12" name="state" id="state" class="inputbox" style="width: 150px" value="<?php if(isset($this->preassignedFields['state'])) $this->_($this->preassignedFields['state']); ?>" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tdVertical">
+                            <label id="stateLabel" for="state"><?php _e('Best Time to Call');?>:</label>
+                        </td>
+                        <td class="tdData">
+                            <input type="text" tabindex="13" name="bestTimeToCall" id="bestTimeToCall" class="inputbox" style="width: 150px" value="<?php if(isset($this->preassignedFields['bestTimeToCall'])) $this->_($this->preassignedFields['bestTimeToCall']); ?>" />
+                        </td>
+                    </tr>
+                <?php else: ?>
                     <tr>
                         <td class="tdVertical">
                             <label id="cityLabel" for="city"><?php _e('City');?>:</label>
@@ -250,6 +287,7 @@ if (MYTABPOS == 'top') {
                             <input type="text" tabindex="13" name="bestTimeToCall" id="bestTimeToCall" class="inputbox" style="width: 150px" value="<?php if(isset($this->preassignedFields['bestTimeToCall'])) $this->_($this->preassignedFields['bestTimeToCall']); ?>" />
                         </td>
                     </tr>
+                <?php endif; ?>
 
                     <?php $tabIndex = 15; ?>
                 </table>

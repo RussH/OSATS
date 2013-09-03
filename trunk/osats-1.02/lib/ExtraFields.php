@@ -615,11 +615,11 @@ class ExtraFields
                 case EXTRA_FIELD_DROPDOWN:
                     $extraFields[$index]['addHTML'] = '
                         <select id="extraField'.$index.'" class="selectBox" name="extraField'.$index.'" style="width: 150px;">
-                           <option value="" selected>- Select from List -</option>
+                           <option value="" selected>' . __('- Select from List -') . '</option>
                     ';
                     $extraFields[$index]['careersAddHTML'] = '
                         <select id="extraField'.$index.'" class="inputBoxNormal" name="extraField'.$index.'">
-                           <option value="" selected>- Select from List -</option>
+                           <option value="" selected>' . __('- Select from List -') . '</option>
                     ';
 
                     $options = explode(',', $data['extraFieldOptions']);

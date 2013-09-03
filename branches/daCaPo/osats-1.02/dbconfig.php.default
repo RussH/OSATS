@@ -8,4 +8,6 @@
 			define('DATABASE_HOST', '');
 			// OSATS DB Name
 			define('DATABASE_NAME', '');
+			// OSATS DB Character Encoding
+			define('DATABASE_CHARSET', 'utf8');
 				?>

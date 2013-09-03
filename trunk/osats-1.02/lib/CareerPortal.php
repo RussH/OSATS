@@ -444,7 +444,7 @@ class CareerPortalSettings
             array($destination, ''),
             $subject,
             $body,
-            true
+            EMAIL_SEND_HTML
         );
     }
 }

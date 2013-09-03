@@ -90,6 +90,15 @@ define('HTML_ENCODING', 'UTF-8');
 /* AJAX Encoding. */
 define('AJAX_ENCODING', 'UTF-8');
 
+/* E-Mail Encoding. */
+define('EMAIL_CHARSET', 'utf-8');
+
+/* Send HTML_Emails */
+define('EMAIL_SEND_HTML', false);
+
+/* Send Emails with signature */
+define('EMAIL_WITH_SIGNATURE', false);
+
 /* Path to modules. */
 define('MODULES_PATH', './modules/');
 
