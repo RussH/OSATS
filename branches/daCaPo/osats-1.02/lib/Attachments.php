@@ -680,7 +680,7 @@ class Attachments
     {
         // FIXME:  Make attachment download preparer work in IE7.
         //return '<a href="'.$url.'" onclick="return doPrepareAndDownload(\''.$getVars.'\', \''.$url.'\', document.getElementById(\'download'.md5($url).'\'), \''.$_SESSION['OSATS']->getCookie().'\');">';
-        return '<a href="' . $url . '">';
+        return '<a href="' . $url . '" target="_blank">';
     }
 
     /**

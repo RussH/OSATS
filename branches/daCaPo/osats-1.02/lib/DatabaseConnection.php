@@ -111,6 +111,19 @@ class DatabaseConnection
             return false;
         }
 
+	if (!mysql_set_charset(DATABASE_CHARSET, $this->_connection))
+        {
+            $error = mysql_error($this->_connection);
+
+            die(
+                '<!-- NOSPACEFILTER --><p style="background: #ec3737; '
+                . 'padding: 4px; margin-top: 0; font: normal normal bold '
+                . '12px/130% Arial, Tahoma, sans-serif;">Error Setting Character '
+                . "Encoding for Database</p><pre>\n\n" . $error . "</pre>\n\n"
+            );
+            return false;
+        }
+
         return true;
     }
 

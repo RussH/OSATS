@@ -5,6 +5,7 @@
 
 include_once('./lib/Mailer.php');
 include_once('./lib/Site.php');
+include_once('./lib/DateUtility.php');
 
 /**
  *	E-Mail Templates Library
@@ -30,18 +31,20 @@ class EmailTemplates
      * @param string template text
      * @return boolean True if successful; false otherwise.
      */
-    public function update($emailTemplateID, $text, $disabled)
+    public function update($emailTemplateID, $subject, $text, $disabled)
     {
         $sql = sprintf(
             "UPDATE
                 email_template
             SET
+                subject = %s,
                 text = %s,
                 disabled = %s
             WHERE
                 email_template_id = %s
             AND
                 site_id = %s",
+            $this->_db->makeQueryStringOrNULL($subject),
             $this->_db->makeQueryStringOrNULL($text),
             $disabled,
             $emailTemplateID,
@@ -101,6 +104,7 @@ class EmailTemplates
                 email_template.email_template_id AS emailTemplateID,
                 email_template.title AS emailTemplateTitle,
                 email_template.tag AS emailTemplateTag,
+                email_template.subject AS subject,
                 email_template.text AS text,
                 email_template.possible_variables AS possibleVariables,
                 email_template.allow_substitution AS allowSubstitution,
@@ -222,6 +226,7 @@ class EmailTemplates
                 email_template.email_template_id AS emailTemplateID,
                 email_template.title AS emailTemplateTitle,
                 email_template.tag AS emailTemplateTag,
+                email_template.subject AS subject,
                 email_template.text AS text,
                 email_template.possible_variables AS possibleVariables,
                 email_template.allow_substitution AS allowSubstitution,
@@ -236,7 +241,7 @@ class EmailTemplates
             $this->_siteID
         );
         $rs = $this->_db->getAssoc($sql);
-
+        
         if (!empty($rs))
         {
             $mailerSettings = new MailerSettings($this->_siteID);
@@ -271,6 +276,7 @@ class EmailTemplates
                 email_template.email_template_id AS emailTemplateID,
                 email_template.title AS emailTemplateTitle,
                 email_template.tag AS emailTemplateTag,
+                email_template.subject AS subject,
                 email_template.text AS text,
                 email_template.possible_variables AS possibleVariables,
                 email_template.allow_substitution AS allowSubstitution,

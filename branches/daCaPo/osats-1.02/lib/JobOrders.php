@@ -299,7 +299,7 @@ class JobOrders
                 array($emailAddress, ''),
                 'OSATS Notification: Job Order Ownership Change',
                 $email,
-                true
+                EMAIL_SEND_HTML
             );
         }
 
