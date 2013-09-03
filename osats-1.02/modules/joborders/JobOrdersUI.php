@@ -1372,7 +1372,7 @@ class JobOrdersUI extends UserInterface
         );
     }
 
-    private function addActivityChangeStatus()
+    private function addActivityChangeStatus($candstatus = NULL)
     {
         /* Bail out if we don't have a valid candidate ID. */
         if (!$this->isRequiredIDValid('candidateID', $_GET))
@@ -1423,7 +1423,20 @@ class JobOrdersUI extends UserInterface
         }
 
         /* Get the change status email template. */
+        /*
+          Status specific email templates:
+          By default, the email template 'EMAIL_TEMPLATE_STATUSCHANGE' is used.
+          However, if there exists an (enabled) email template tagged 'EMAIL_TEMPLATE_STATUSCHANGE_%CANDSTATUS%'
+          (with '%CANDSTATUS%' replaced with the new status, see pipeline status flags in constants.php),
+          this template takes precedence over the default one an will be used. 
+        */
         $emailTemplates = new EmailTemplates($this->_siteID);
+
+        /* First, try getting a status-specific template */
+/*        $statusChangeTemplateRS = $emailTemplates->getByTag(
+            'EMAIL_TEMPLATE_STATUSCHANGE'
+        );
+*/
         $statusChangeTemplateRS = $emailTemplates->getByTag(
             'EMAIL_TEMPLATE_STATUSCHANGE'
         );
@@ -1442,15 +1455,25 @@ class JobOrdersUI extends UserInterface
         /* Replace e-mail template variables. '%CANDSTATUS%', '%JBODTITLE%',
          * '%JBODCLIENT%' are replaced by JavaScript.
          */
+        $EEOSettings = new EEOSettings($this->_siteID);
+        $EEOSettingsRS = $EEOSettings->getAll();
+
         $stringsToFind = array(
             '%CANDOWNER%',
             '%CANDFIRSTNAME%',
-            '%CANDFULLNAME%'
+            '%CANDLASTNAME%',
+            '%CANDFULLNAME%',
+            '%SALUTATION%'
         );
         $replacementStrings = array(
             $candidateData['ownerFullName'],
             $candidateData['firstName'],
-            $candidateData['firstName'] . ' ' . $candidateData['lastName']
+            $candidateData['lastName'],
+            $candidateData['firstName'] . ' ' . $candidateData['lastName'],
+            ( $EEOSettingsRS['enabled'] == 1 && $EEOSettingsRS['genderTracking'] == 1 && !empty($candidateData['eeoGender']) ?  
+                ( strtolower($candidateData['eeoGender']) == 'f' ? __('Dear Mrs.') : __('Dear Mr.') ) :
+                        __('Hello') 
+            ) 
         );
         $statusChangeTemplate = str_replace(
             $stringsToFind,

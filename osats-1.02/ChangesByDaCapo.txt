@@ -1,10 +1,6 @@
 2013-09-03
 ----------
 
-* ATTENTION: Renamed [config|dbconfig|constants].php to [...].php.default and added
-  [config|dbconfig|constants].php to svn:ignore in order to keep local config
-  changes out of SVN.
-
 * New pipeline status "Candidate declined", still has to be added to the pipeline graph
 
 * Made database charset configurable via dbconfig.php
@@ -43,7 +39,5 @@
   address, zip and city in the correct order when I18N_DEFAULT is set to 'de_DE'
 
 * Added several translations
-
-* Updated bundled PHPMailer to latest version
 
 * Some minor bugfixes

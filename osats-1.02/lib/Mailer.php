@@ -55,6 +55,7 @@ class Mailer
         $this->refreshSettings();
 
         $this->_mailer->SetLanguage(i18n::getLanguageToken(), './lib/phpmailer/language/');
+        $this->_mailer->CharSet = EMAIL_CHARSET;
 
         /* Stuff for E-Mail logging. */
         // FIXME: Do this in the UserInterface. Session dependencied in
@@ -103,7 +104,7 @@ class Mailer
             $logMessage,
             $replyTo,
             $wrapLinesAt,
-            true
+            EMAIL_WITH_SIGNATURE
         );
     }
 
@@ -138,7 +139,7 @@ class Mailer
             $logMessage,
             $replyTo,
             $wrapLinesAt,
-            true
+            EMAIL_WITH_SIGNATURE
         );
     }
 
@@ -164,7 +165,7 @@ class Mailer
      */
     public function send($from, $recipients, $subject, $body, $isHTML = false,
         $logMessage = true, $replyTo = array(), $wrapLinesAt = 78,
-        $signature = true)
+        $signature = false)
     {
 
         $this->_mailer->From     = $from[0];
