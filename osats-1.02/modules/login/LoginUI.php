@@ -317,7 +317,7 @@ class LoginUI extends UserInterface
                 array($username, $username),
                 PASSWORD_RESET_SUBJECT,
                 sprintf(PASSWORD_RESET_BODY, $password),
-                true
+                EMAIL_SEND_HTML
             );
 
             if ($mailerStatus)
