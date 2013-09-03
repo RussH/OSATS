@@ -4,6 +4,7 @@
 
 
 include_once('./config.php');
+include_once('./dbconfig.php');
 include_once('./constants.php');
 include_once('./lib/DatabaseConnection.php');
 include_once('./lib/Session.php'); /* Depends: MRU, Users, DatabaseConnection. */

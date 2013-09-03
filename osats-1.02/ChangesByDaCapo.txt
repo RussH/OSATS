@@ -1,0 +1,49 @@
+2013-09-03
+----------
+
+* ATTENTION: Renamed [config|dbconfig|constants].php to [...].php.default and added
+  [config|dbconfig|constants].php to svn:ignore in order to keep local config
+  changes out of SVN.
+
+* New pipeline status "Candidate declined", still has to be added to the pipeline graph
+
+* Made database charset configurable via dbconfig.php
+
+* New option EMAIL_CHARSET in config.php
+
+* New option EMAIL_SEND_HTML in config.php
+
+* New option EMAIL_WITH_SIGNATURE in config.php
+
+* lib/Mailer.php: send no signature by default
+
+* Made e-mail subject configurable for candidate notification e-mails
+
+* Added new placeholder %SALUTATION% for e-mail templates. The salutation is chosen according
+  to the candidate's gender ("Dear Mrs." or "Dear Mr.", or the i18n'd string respectively).
+
+* Added new placeholder %CANDLASTNAME" for e-mail templates.
+
+* Allow extra fields as placeholders in e-mail templates
+
+* Allow individual e-mail templates for status change notifications sent to candidates:
+  If there exists a template tagged EMAIL_TEMPLATE_STATUSCHANGE_[status_id] in the 
+  'email_template' table, it will be used. Otherwise, the default EMAIL_TEMPLATE_STATUSCHANGE
+  template will be used.
+  NOTE: This change required a tweak to the e-mail generation mechanism. Now, on every change
+  of the status dropdown control, the respective template is loaded via an AJAX request.
+  This may make the UI feel slow on remote internet connections, calling for a "spinner"
+  visual feedback yet to be implemented.
+
+* Open attachments in a _blank window
+
+* Added a google maps link to the candidate addres view
+
+* In modules/candidates/Edit.tpl and .../Add.tpl, added a conditional in order to display 
+  address, zip and city in the correct order when I18N_DEFAULT is set to 'de_DE'
+
+* Added several translations
+
+* Updated bundled PHPMailer to latest version
+
+* Some minor bugfixes
