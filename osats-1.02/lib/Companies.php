@@ -216,7 +216,7 @@ class Companies
                 array($emailAddress, ''),
                 'OSATS Notification: Company Ownership Change',
                 $email,
-                EMAIL_SEND_HTML
+                true
             );
         }
 

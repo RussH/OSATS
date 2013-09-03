@@ -3,7 +3,6 @@
  * OSATS
  */
 
-include_once('./lib/i18n.php');
 include_once('./lib/History.php');
 
 /**
@@ -272,7 +271,7 @@ class Pipelines
 
     // FIXME: Document me.
     public function setStatus($candidateID, $jobOrderID, $statusID,
-                              $emailAddress, $emailSubject, $emailText)
+                              $emailAddress, $emailText)
     {
         /* Get existing status. */
         $sql = sprintf(
@@ -347,12 +346,13 @@ class Pipelines
         if (!empty($emailAddress))
         {
             /* Send e-mail notification. */
+            //FIXME: Make subject configurable.
             $mailer = new Mailer($this->_siteID);
             $mailerStatus = $mailer->sendToOne(
                 array($emailAddress, ''),
-                $emailSubject,
+                CANDIDATE_STATUSCHANGE_SUBJECT,
                 $emailText,
-                EMAIL_SEND_HTML
+                true
             );
         }
     }
@@ -371,7 +371,8 @@ class Pipelines
             WHERE
                 is_enabled = 1
             ORDER BY
-                candidate_joborder_status_id ASC"
+                candidate_joborder_status_id ASC",
+            $this->_siteID
         );
 
         return $this->_db->getAllAssoc($sql);
@@ -394,9 +395,10 @@ class Pipelines
             AND
                 candidate_joborder_status_id != 0
             ORDER BY
-                candidate_joborder_status_id ASC"
+                candidate_joborder_status_id ASC",
+            $this->_siteID
         );
-        
+
         return $this->_db->getAllAssoc($sql);
     }
 
@@ -636,8 +638,8 @@ class Pipelines
             $this->_db->makeQueryInteger($candidateJobOrderID),
             $this->_siteID
         );
-        
-	$queryResult = $this->_db->query($sql);
+
+        $queryResult = $this->_db->query($sql);
         if (!$queryResult)
         {
             return -1;

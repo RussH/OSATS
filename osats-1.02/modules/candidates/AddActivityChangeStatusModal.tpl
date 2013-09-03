@@ -82,7 +82,7 @@
                     <span id="changeStatusSpanA"<?php if ($this->selectedJobOrderID == -1): ?> style="color: #aaaaaa;"<?php endif;?>><?php _e('Change Status');?></span><br />
 
                     <div id="changeStatusDiv" style="margin-top: 4px;">
-                        <select id="statusID" name="statusID" class="inputbox" style="width: 150px;" onchange="AS_onStatusChange(statusesArray, jobOrdersArray, 'regardingID', 'statusID', 'sendEmailCheckTR', 'triggerEmailSpan', 'activityNote', 'activityTypeID', <?php if ($this->isJobOrdersMode): echo $this->selectedJobOrderID; else: ?>null<?php endif; ?>, 'candidateID', 'subject', 'customMessage', 'originalCustomMessage', 'triggerEmail', statusesArrayString, jobOrdersArrayStringTitle, jobOrdersArrayStringCompany, statusTriggersEmailArray, 'emailIsDisabled', '<?php echo($this->sessionCookie); ?>' );" disabled>
+                        <select id="statusID" name="statusID" class="inputbox" style="width: 150px;" onchange="AS_onStatusChange(statusesArray, jobOrdersArray, 'regardingID', 'statusID', 'sendEmailCheckTR', 'triggerEmailSpan', 'activityNote', 'activityTypeID', <?php if ($this->isJobOrdersMode): echo $this->selectedJobOrderID; else: ?>null<?php endif; ?>, 'customMessage', 'origionalCustomMessage', 'triggerEmail', statusesArrayString, jobOrdersArrayStringTitle, jobOrdersArrayStringCompany, statusTriggersEmailArray, 'emailIsDisabled');" disabled>
                             <option value="-1">(<?php _e('Select a Status');?>)</option>
 
                             <?php if ($this->selectedStatusID == -1): ?>
@@ -107,8 +107,7 @@
                 </td>
                 <td class="tdData">
                     <?php _e('Custom Message');?><br />
-                    <input name="subject" id="subject" style="width:375px" value="<?php echo($this->subject); ?>" /><br />
-                    <input type="hidden" id="originalCustomMessage" value="<?php $this->_($this->statusChangeTemplate); ?>" />
+                    <input type="hidden" id="origionalCustomMessage" value="<?php $this->_($this->statusChangeTemplate); ?>" />
                     <input type="hidden" id="emailIsDisabled" value="<?php echo($this->emailDisabled); ?>" />
                     <textarea style="height:135px; width:375px;" name="customMessage" id="customMessage" cols="50" class="inputbox"></textarea>
                 </td>
@@ -122,11 +121,11 @@
                     <div id="activityNoteDiv" style="margin-top: 4px;">
                         <span id="addActivitySpanA"><?php _e('Activity Type');?></span><br />
                         <select id="activityTypeID" name="activityTypeID" class="inputbox" style="width: 150px; margin-bottom: 4px;">
-                            <option value="<?php echo(ACTIVITY_CALL); ?>"><?php _e('Call');?></option>
+                            <option selected="selected" value="<?php echo(ACTIVITY_CALL); ?>"><?php _e('Call');?></option>
                             <option value="<?php echo(ACTIVITY_CALL_TALKED); ?>"><?php _e('Call');?> (<?php _e('Talked');?>)</option>
                             <option value="<?php echo(ACTIVITY_CALL_LVM); ?>"><?php _e('Call');?> (<?php _e('LVM');?>)</option>
                             <option value="<?php echo(ACTIVITY_CALL_MISSED); ?>"><?php _e('Call');?> (<?php _e('Missed');?>)</option>
-                            <option selected="selected" value="<?php echo(ACTIVITY_EMAIL); ?>"><?php _e('E-Mail');?></option>
+                            <option value="<?php echo(ACTIVITY_EMAIL); ?>"><?php _e('E-Mail');?></option>
                             <option value="<?php echo(ACTIVITY_MEETING); ?>"><?php _e('Meeting');?></option>
                             <option value="<?php echo(ACTIVITY_OTHER); ?>"><?php _e('Other');?></option>
                         </select><br />
@@ -243,11 +242,11 @@
             </tr>
 
         </table>
-        <input type="submit" class="button" name="submit" id="submit" value="<?php _e("Save") ?>" />&nbsp;
+        <input type="submit" class="button" name="submit" id="submit" value="Save" />&nbsp;
 <?php if ($this->isJobOrdersMode): ?>
-        <input type="button" class="button" name="close" value="<?php _e("Cancel") ?>" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=joborders&amp;a=show&amp;jobOrderID=<?php echo($this->selectedJobOrderID); ?>');" />
+        <input type="button" class="button" name="close" value="Cancel" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=joborders&amp;a=show&amp;jobOrderID=<?php echo($this->selectedJobOrderID); ?>');" />
 <?php else: ?>
-        <input type="button" class="button" name="close" value="<?php _e("Cancel") ?>" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=show&amp;candidateID=<?php echo($this->candidateID); ?>');" />
+        <input type="button" class="button" name="close" value="Cancel" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=show&amp;candidateID=<?php echo($this->candidateID); ?>');" />
 <?php endif; ?>
     </form>
 
@@ -285,9 +284,9 @@
 
     <form>
 <?php if ($this->isJobOrdersMode): ?>
-        <input type="button" name="close" class="button" value="<?php _e("Close"); ?>" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=joborders&amp;a=show&amp;jobOrderID=<?php echo($this->regardingID); ?>');" />
+        <input type="button" name="close" class="button" value="Close" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=joborders&amp;a=show&amp;jobOrderID=<?php echo($this->regardingID); ?>');" />
 <?php else: ?>
-        <input type="button" name="close" class="button" value="<?php _e("Close"); ?>" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=show&amp;candidateID=<?php echo($this->candidateID); ?>');" />
+        <input type="button" name="close" class="button" value="Close" onclick="parentGoToURL('<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=show&amp;candidateID=<?php echo($this->candidateID); ?>');" />
 <?php endif; ?>
     </form>
 <?php endif; ?>

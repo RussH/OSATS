@@ -331,7 +331,7 @@ class Candidates
                 array($emailAddress, ''),
                 'OSATS Notification: Candidate Ownership Change',
                 $email,
-                EMAIL_SEND_HTML
+                true
             );
         }
 

@@ -1143,13 +1143,11 @@ class SettingsUI extends UserInterface
 
         if ($useThisTemplate)
         {
-            $subject = $this->getTrimmedInput('subject', $_POST);
             $text = $this->getTrimmedInput('messageText', $_POST);
             $disabled = 0;
         }
         else
         {
-            $subject = $this->getTrimmedInput('subject', $_POST);
             $text = $this->getTrimmedInput('messageTextOrigional', $_POST);
             $disabled = 1;
         }
@@ -1160,7 +1158,7 @@ class SettingsUI extends UserInterface
         }
 
         $emailTemplates = new EmailTemplates($this->_siteID);
-        $emailTemplates->update($templateID, $subject, $text, $disabled);
+        $emailTemplates->update($templateID, $text, $disabled);
 
         osatutil::transferRelativeURI('m=settings&a=emailTemplates');
     }
@@ -1643,7 +1641,6 @@ class SettingsUI extends UserInterface
         $candidateJoborderStatusSendsMessage[PIPELINE_STATUS_INTERVIEWING] = (UserInterface::isChecked('statusChangeInterviewing', $_POST) ? 1 : 0);
         $candidateJoborderStatusSendsMessage[PIPELINE_STATUS_OFFERED] = (UserInterface::isChecked('statusChangeOffered', $_POST) ? 1 : 0);
         $candidateJoborderStatusSendsMessage[PIPELINE_STATUS_CLIENTDECLINED] = (UserInterface::isChecked('statusChangeDeclined', $_POST) ? 1 : 0);
-        $candidateJoborderStatusSendsMessage[PIPELINE_STATUS_CANDIDATEDECLINED] = (UserInterface::isChecked('statusChangeCandidatedeclined', $_POST) ? 1 : 0 );
         $candidateJoborderStatusSendsMessage[PIPELINE_STATUS_PLACED] = (UserInterface::isChecked('statusChangePlaced', $_POST) ? 1 : 0);
 
         $mailerSettings->set('candidateJoborderStatusSendsMessage', serialize($candidateJoborderStatusSendsMessage));

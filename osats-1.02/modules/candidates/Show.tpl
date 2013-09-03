@@ -48,10 +48,8 @@ if (MYTABPOS == 'top') {
                                 <td class="data">
                                     <span style="font-weight: bold;" class="<?php echo($this->data['titleClass']); ?>">
                                         <?php 
-                                          $this->_($this->data['firstName']); 
-                                          echo '&nbsp;';
+                                          $this->_($this->data['firstName']);
                                           $this->_($this->data['middleName']);
-                                          if ($this->data['middleName']) echo '&nbsp;';
                                           $this->_($this->data['lastName']);
                                           if ($this->data['isActive'] != 1)
                                             echo '&nbsp;<span style="color:orange;">('.__('INACTIVE').')</span>';
@@ -99,16 +97,15 @@ if (MYTABPOS == 'top') {
                             </tr>
 
                             <tr>
-                                <td class="vertical"><?php _e('Address'); ?>:</td>
-                                <td class="data"><?php echo(nl2br(htmlspecialchars($this->data['address']))); ?>&nbsp;
-                                <?php echo($this->data['googleMaps']); ?></td>
+                                <td class="vertical"><?php _e('Address')?>:</td>
+                                <td class="data"><?php echo(nl2br(htmlspecialchars($this->data['address']))); ?></td>
                             </tr>
 
                             <tr>
                                 <td class="vertical">&nbsp;</td>
                                 <td class="data">
-                                    <?php $this->_($this->data['zip']); ?>
                                     <?php $this->_($this->data['cityAndState']); ?>
+                                    <?php $this->_($this->data['zip']); ?>
                                 </td>
                             </tr>
 
@@ -224,7 +221,7 @@ if (MYTABPOS == 'top') {
                                     </tr>
                                     <tr>
                                         <td class="data">
-                                            <a href="attachments/<?php $this->_($attachmentsData['directoryName']) ?>/<?php $this->_($attachmentsData['storedFilename']) ?>" target="_blank">
+                                            <a href="attachments/<?php $this->_($attachmentsData['directoryName']) ?>/<?php $this->_($attachmentsData['storedFilename']) ?>">
                                                 <img src="attachments/<?php $this->_($attachmentsData['directoryName']) ?>/<?php $this->_($attachmentsData['storedFilename']) ?>" border="0" alt="" width="125" />
                                             </a>
                                         </td>
@@ -402,7 +399,7 @@ if (MYTABPOS == 'top') {
                 &nbsp;&nbsp;&nbsp;&nbsp;
             <?php endif; ?>
             <?php if ($this->accessLevel >= ACCESS_LEVEL_DELETE): ?>
-                <a id="delete_link" href="<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=delete&amp;candidateID=<?php echo($this->candidateID); ?>" onclick="javascript:return confirm(__('Delete this candidate?'));">
+                <a id="delete_link" href="<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=delete&amp;candidateID=<?php echo($this->candidateID); ?>" onclick="javascript:return confirm('Delete this candidate?');">
                     <img src="images/actions/delete.gif" width="16" height="16" class="absmiddle" alt="delete" border="0" />&nbsp;<?php _e('Delete')?>
                 </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;

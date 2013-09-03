@@ -263,7 +263,7 @@ class Contacts
                 array($emailAddress, ''),
                 'OSATS Notification: Contact Ownership Change',
                 $email,
-                EMAIL_SEND_HTML
+                true
             );
         }
 

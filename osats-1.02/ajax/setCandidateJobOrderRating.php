@@ -8,6 +8,7 @@
 
 include_once('./lib/Pipelines.php');
 
+
 $interface = new SecureAJAXInterface();
 
 if ($_SESSION['OSATS']->getAccessLevel() < ACCESS_LEVEL_EDIT)
