@@ -111,14 +111,6 @@ if (MYTABPOS == 'top') {
                                     </tr>
                                     <tr>
                                         <td class="tdVertical" style="width:150px;">
-                                            Subject:
-                                        </td>
-                                        <td class="tdData">
-                                            <input class="inputbox" name="subject" <?php if($data['disabled'] == 1) echo('disabled'); ?> id="subject<?php echo($data['emailTemplateID']); ?>" style="width:450px;" value="<?php echo($data['subject']); ?>" /> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tdVertical" style="width:150px;">
                                             Message:
                                         </td>
                                         <td class="tdData">
@@ -128,7 +120,7 @@ if (MYTABPOS == 'top') {
                                                         <textarea class="inputbox" name="messageText" <?php if ($data['disabled'] == 1) echo('disabled'); ?> id="messageText<?php echo($data['emailTemplateID']); ?>" style="width:450px; height:280px;" onclick="document.getElementById('selectorSpan').style.display='none'; document.getElementById('templateTitleSpan<?php echo($data['emailTemplateID']); ?>').style.display='';" ><?php echo($this->_($data['text'])); ?></textarea>
                                                         <input type="hidden" name="messageTextOrigional" id="messageTextOrigional<?php echo($data['emailTemplateID']); ?>" value="<?php echo($this->_($data['text'])); ?>">
                                                         <br /><br />
-                                                        <input type="checkbox" name="useThisTemplate" id="useThisTemplate<?php echo($data['emailTemplateID']); ?>" <?php if ($data['disabled'] == 0) echo('checked'); ?> onclick="if (this.checked) {document.getElementById('subject<?php echo($data['emailTemplateID']); ?>').disabled=false; document.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=false;} else {ddocument.getElementById('subject<?php echo($data['emailTemplateID']); ?>').disabled=false; ocument.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=true;} document.getElementById('selectorSpan').style.display='none'; document.getElementById('templateTitleSpan<?php echo($data['emailTemplateID']); ?>').style.display='';"> Use this Template / Feature<br />
+                                                        <input type="checkbox" name="useThisTemplate" id="useThisTemplate<?php echo($data['emailTemplateID']); ?>" <?php if ($data['disabled'] == 0) echo('checked'); ?> onclick="if (this.checked) {document.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=false;} else {document.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=true;} document.getElementById('selectorSpan').style.display='none'; document.getElementById('templateTitleSpan<?php echo($data['emailTemplateID']); ?>').style.display='';"> Use this Template / Feature<br />
                                                     </td>
                                                     <td style="text-align: center;">
                                                     <div style="font-weight:bold;">Insert Formatting:</div>
@@ -178,7 +170,7 @@ if (MYTABPOS == 'top') {
                                         </td>
                                         <td>
                                             <input type="submit" class="button" value="Save Template">
-                                            <input type="reset" class="button" value="Reset Template" onclick="document.getElementById('selectorSpan').style.display=''; document.getElementById('templateTitleSpan<?php echo($data['emailTemplateID']); ?>').style.display='none'; document.getElementById('subject<?php echo($data['emailTemplateID']); ?>').disabled=<?php if($data['disabled'] == 0) {echo('false'); } else {echo('true'); } ?>; document.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=<?php if ($data['disabled'] == 0) {echo('false'); } else {echo('true'); } ?>;"
+                                            <input type="reset" class="button" value="Reset Template" onclick="document.getElementById('selectorSpan').style.display=''; document.getElementById('templateTitleSpan<?php echo($data['emailTemplateID']); ?>').style.display='none'; document.getElementById('messageText<?php echo($data['emailTemplateID']); ?>').disabled=<?php if ($data['disabled'] == 0) {echo('false'); } else {echo('true'); } ?>;">
                                         </td>
                                     </tr>
                                 </table>

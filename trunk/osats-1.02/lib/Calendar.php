@@ -954,7 +954,7 @@ class Calendar
                 array($address, ''),
                 $subject,
                 $body,
-                EMAIL_SEND_HTML
+                true
             );
         }
     }

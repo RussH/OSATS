@@ -124,35 +124,7 @@ if (MYTABPOS == 'top') {
                             <textarea class="inputbox" id="address" name="address" style="width: 150px;"><?php $this->_($this->data['address']); ?></textarea>
                         </td>
                     </tr>
-                <?php if(I18N_DEFAULT == 'de_DE'): ?>
-                    <tr>
-                        <td class="tdVertical">
-                            <label id="zipLabel" for="zip"><?php _e('Postal Code');?>:</label>
-                        </td>
-                        <td class="tdData">
-                            <input type="text" class="inputbox" id="zip" name="zip" value="<?php $this->_($this->data['zip']); ?>" style="width: 150px;" />
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td class="tdVertical">
-                            <label id="cityLabel" for="city"><?php _e('City');?>:</label>
-                        </td>
-                        <td class="tdData">
-                            <input type="text" class="inputbox" id="city" name="city" value="<?php $this->_($this->data['city']); ?>" style="width: 150px;" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="tdVertical">
-                            <label id="stateLabel" for="state"><?php _e('State');?>:</label>
-                        </td>
-                        <td class="tdData">
-                            <input type="text" class="inputbox" id="state" name="state" value="<?php $this->_($this->data['state']); ?>" style="width: 150px;" />
-                        </td>
-                    </tr>
-
-                <?php else: ?>
                     <tr>
                         <td class="tdVertical">
                             <label id="cityLabel" for="city"><?php _e('City');?>:</label>
@@ -181,7 +153,6 @@ if (MYTABPOS == 'top') {
                             <img src="images/indicator2.gif" alt="AJAX" id="ajaxIndicator" style="vertical-align: middle; visibility: hidden; margin-left: 5px;" />
                         </td>
                     </tr>
-                <?php endif; ?>
 
                     <tr>
                         <td class="tdVertical">
@@ -251,7 +222,7 @@ if (MYTABPOS == 'top') {
 
                      <tr>
                         <td class="tdVertical">
-                            <label id="sourceLabel" for="image"><?php _e('Picture'); ?>:</label>
+                            <label id="sourceLabel" for="image">Picture:</label>
                         </td>
                         <td class="tdData">
                             <input type="button" class="button" id="addImage" name="addImage" value="<?php _e('Edit Profile Image');?>" style="width:150px;" onclick="showPopWin('<?php echo(osatutil::getIndexName()); ?>?m=candidates&amp;a=addEditImage&amp;candidateID=<?php echo($this->candidateID); ?>', 400, 370, null); return false;" />&nbsp;

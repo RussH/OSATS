@@ -198,9 +198,9 @@ class TemplateUtility
         echo '<div id="LeftofsearchP">', "\n";
         echo '<div id="Leftofsearch">', "\n";
         // get logged in user and logout option
-        echo '<a href="', $indexName, '?m=logout"><img src="images/lock.png" alt="" class="ico" /> ' . __('LOGOUT') . ' </a>';
+        echo '<a href="', $indexName, '?m=logout"><img src="images/lock.png" alt="" class="ico" /> LOGOUT </a>';
         //if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_EXTENDED_SITE_NAME'))) return;
-        echo '<span>     ' . __('Hi there') . ' <span style="font-weight:bold;">', $fullName, '!</span></span><br />';
+        echo '<span>     Hi there <span style="font-weight:bold;">', $fullName, '!</span></span><br />';
 
             
             
@@ -510,12 +510,12 @@ class TemplateUtility
         foreach ($modules as $moduleName => $parameters)
         {
             // get the name of the tab from the array which was saved in the db under moduleinfo - Jamin
-			$tabText = __($parameters[1]);
+			$tabText = $parameters[1];
 			$tabVisible = $parameters[5];
 		
            //print_r($tabVisible . "<br />");
            // Don't display a module's tab if $tabText is empty.
-			if (empty($tabText) || $tabText == '**')
+			if (empty($tabText))
             {
                 continue;
             }
@@ -523,7 +523,7 @@ class TemplateUtility
             /* If name = Companies and HR mode is on, change tab name to My Company. */
             if ($_SESSION['OSATS']->isHrMode() && $tabText == __('Companies'))
             {
-                $tabText = __('My Company');
+                $tabText = 'My Company';
             }
 
             /* we looked at the db and found parameters[5]. if its a 0 then tab is not visible. Jamin */

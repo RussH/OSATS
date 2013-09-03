@@ -14,8 +14,8 @@
                 <tr>
                     <td class="tdVertical"><?php _e('Resume');?>:</td>
                     <td>
-                        <input type="radio" id="resume" name="resume" value="1" /><?php _e('_Yes');?>
-                        <input type="radio" id="resume" name="resume" value="0" checked="checked" /><?php _e('_No');?>
+                        <input type="radio" id="resume" name="resume" value="1" checked="checked" /><?php _e('_Yes');?>
+                        <input type="radio" id="resume" name="resume" value="0" /><?php _e('_No');?>
                     </td>
                 </tr>
             </table>
@@ -29,7 +29,7 @@
             <p><?php _e('The file has been successfully attached.');?></p>
         <?php endif; ?>
         <form>
-            <input type="button" name="close" value=<?php echo '"' . __('Close') . '"' ?> onclick="parentHidePopWinRefresh();" />
+            <input type="button" name="close" value="Close" onclick="parentHidePopWinRefresh();" />
         </form>
     <?php endif; ?>
     </body>

@@ -621,20 +621,17 @@ function AS_onRegardingChange(statusesArray, jobOrdersArray, regardingSelectID,
 //FIXME: Document me.
 function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
     statusSelectID, sendEmailRowID, sendEmailSpanID, activityEntryID,
-    activityTypeID, regardingIDOverride, candidateID, subjectID, emailTextID, emailTextOriginalID,
+    activityTypeID, regardingIDOverride, emailTextID, emailTextOrigionalID,
     triggerEmailID, statusesArrayString, jobOrdersArrayStringTitle,
-    jobOrdersArrayStringCompany, statusTriggersEmailArray, emailIsDisabledID, sessionCookie)
+    jobOrdersArrayStringCompany, statusTriggersEmailArray, emailIsDisabledID)
 {
     var regardingSelectList = document.getElementById(regardingSelectID);
     var statusSelectList = document.getElementById(statusSelectID);
     var activityEntry = document.getElementById(activityEntryID);
     var activityType = document.getElementById(activityTypeID);
     var sendEmailSpan = document.getElementById(sendEmailSpanID);
-    var sendEmailRow = document.getElementById(sendEmailRowID);
-    var subject = document.getElementById(subjectID);
     var emailText = document.getElementById(emailTextID);
-    var emailTextOriginal = document.getElementById(emailTextOriginalID);
-    var candidate = document.getElementById(candidateID);
+    var emailTextOrigional = document.getElementById(emailTextOrigionalID);
     var triggerEmail = document.getElementById(triggerEmailID);
     var emailIsDisabled = document.getElementById(emailIsDisabledID);
 
@@ -663,7 +660,7 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
             sendEmailSpan.style.display = 'inline';
             return;
         }
-        
+
         /* If the selected status is the same as the candidate's current
          * status, no notification e-mails.
          */
@@ -674,48 +671,31 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
         }
         else
         {
-            if (statusTriggersEmailArray[statusSelectList.selectedIndex-1] == 1 || emailIsDisabled.value == "0")
+            if (statusTriggersEmailArray[statusSelectList.selectedIndex-1] == 1 && emailIsDisabled.value == "0")
             {
                 sendEmailSpan.style.display = 'inline';
-                triggerEmail.checked = false;
+                triggerEmail.checked = true;
             }
             else
             {
                 sendEmailSpan.style.display = 'inline';
-                sendEmailRow.style.display = 'inline';
-                triggerEmail.checked = true;
+                triggerEmail.checked = false;
             }
             AS_onSendEmailChange('triggerEmail', 'sendEmailCheckTR', 'visibleTR');
-
-            $arrEmail =  getEmailTextOriginal(
-                candidate.value, 
-                regardingID, 
-                statusSelectList[statusSelectList.selectedIndex].value, 
-                sessionCookie
-            );
-
-            subject.value = $arrEmail['subject'];
-            emailTextOriginal.value = $arrEmail['text'];
-
             AS_onChangeStatusChangeGenerateEmail(
                 emailText,
-                emailTextOriginal,
+                emailTextOrigional,
                 statusSelectList[statusSelectList.selectedIndex].text,
                 statusesArrayString[statusIndex],
                 jobOrdersArrayStringTitle[statusIndex],
                 jobOrdersArrayStringCompany[statusIndex]
             );
-
             if (activityEntry.value == '' || activityEntry.value.indexOf('Status change: ') != -1)
             {
                 activityEntry.value = 'Status change: ' +
                     statusSelectList[statusSelectList.selectedIndex].text;
             }
         }
-    } else {
-        sendEmailSpan.style.display = 'none';
-        sendEmailRow.style.display = 'none';
-        triggerEmail.checked = false;
     }
 }
 
@@ -732,64 +712,10 @@ function replaceAll(templateString, findString, replaceString)
 }
 
 //FIXME: Document me.
-function getEmailTextOriginal(candidateID, jobOrderID, statusID, sessionCookie)
-{
-    var http = XMLHttpRequest();
-
-    /* Build HTTP POST data. */
-    var POSTData = '';
-    POSTData += '&f=getStatusChangeEmailTemplate';
-    POSTData += '&candidateID=' + candidateID;
-    POSTData += '&jobOrderID=' + jobOrderID; 
-    POSTData += '&statusID=' + statusID;
-    POSTData += '&' + sessionCookie;
-    POSTData += '&nobuffer';
-
-    http.open('POST', './ajax.php', false);
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    http.setRequestHeader('Content-length', POSTData.length);
-    http.setRequestHeader('Connection', 'close');
-    http.send(POSTData);
-        
-    if (http.readyState != 4)
-    {
-        return;
-    }
-        
-    if (!http.responseXML)
-    {
-        var errorMessage = "An error occurred while receiving a response from the server.\n\n"
-                         + http.responseText;
-        alert(errorMessage);
-        return;
-    }
-
-    /* Return if we have any errors. */
-    var errorCodeNode = http.responseXML.getElementsByTagName('errorcode').item(0);
-    var errorMessageNode = http.responseXML.getElementsByTagName('errormessage').item(0);
-    if (!errorCodeNode.firstChild || errorCodeNode.firstChild.nodeValue != '0')
-    {
-        if (errorMessageNode.firstChild)
-        {
-            var errorMessage = "An error occured while receiving a response from the server.\n\n"
-                + errorMessageNode.firstChild.nodeValue;
-            alert(errorMessage);
-        }
-
-        return;
-    }
-
-    $ret = new Array();
-    $ret['subject'] = http.responseXML.getElementsByTagName('statusChangeTemplateSubject')[0].firstChild.data;
-    $ret['text'] = http.responseXML.getElementsByTagName('statusChangeTemplate')[0].firstChild.data.replace(/<br \/>/g, "\r\n");
-    return $ret;
-}
-
-//FIXME: Document me.
-function AS_onChangeStatusChangeGenerateEmail(emailText, emailTextOriginal,
+function AS_onChangeStatusChangeGenerateEmail(emailText, emailTextOrigional,
     statusString, prevStatusString, jobOrderTitle, jobOrderCompany)
 {
-    var templateString = emailTextOriginal.value;
+    var templateString = emailTextOrigional.value;
 
     templateString = replaceAll(templateString, "%CANDSTATUS%", statusString);
     templateString = replaceAll(templateString, "%CANDPREVSTATUS%", prevStatusString);

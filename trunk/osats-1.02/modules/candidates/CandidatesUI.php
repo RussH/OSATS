@@ -335,27 +335,6 @@ class CandidatesUI extends UserInterface
             $data['city'], $data['state']
         );
 
-        /* Link to Google Maps for this address */
-        if (!empty($data['address']) && !empty($data['city']))
-        {
-            $data['googleMaps'] = '<a href="http://maps.google.com/maps?q=' .
-                     urlencode($data['address']) . '+' .
-                     urlencode($data['city']);
-
-            /* Google Maps will find an address without Zip. */
-            if (!empty($data['zip']))
-            {
-                $data['googleMaps'] .= '+' . $data['zip'];
-            }
-
-            $data['googleMaps'] .= '" target=_blank><img src="images/google_maps.gif" style="border: none;" class="absmiddle" /></a>';
-        }
-        else
-        {
-            $data['googleMaps'] = '';
-        }
-
-
         /*
          * Replace newlines with <br />, fix HTML "special" characters, and
          * strip leading empty lines and spaces.
@@ -1109,14 +1088,12 @@ class CandidatesUI extends UserInterface
                 $stringsToFind = array(
                     '%CANDOWNER%',
                     '%CANDFIRSTNAME%',
-		    '%CANDLASTNAME%',
                     '%CANDFULLNAME%',
                     '%CANDOSATSURL%'
                 );
                 $replacementStrings = array(
                     $ownerDetails['fullName'],
                     $candidateDetails['firstName'],
-                    $candidateDetail['lastName'],
                     $candidateDetails['firstName'] . ' ' . $candidateDetails['lastName'],
                     '<a href="http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?')) . '?m=candidates&amp;a=show&amp;candidateID=' . $candidateID . '">'.
                         'http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?')) . '?m=candidates&amp;a=show&amp;candidateID=' . $candidateID . '</a>'
@@ -1562,25 +1539,15 @@ class CandidatesUI extends UserInterface
         /* Replace e-mail template variables. '%CANDSTATUS%', '%JBODTITLE%',
          * '%JBODCLIENT%' are replaced by JavaScript.
          */
-        $EEOSettings = new EEOSettings($this->_siteID);
-        $EEOSettingsRS = $EEOSettings->getAll();
-
         $stringsToFind = array(
             '%CANDOWNER%',
             '%CANDFIRSTNAME%',
-	    '%CANDLASTNAME%',
-            '%CANDFULLNAME%',
-            '%SALUTATION%'
+            '%CANDFULLNAME%'
         );
         $replacementStrings = array(
             $candidateData['ownerFullName'],
             $candidateData['firstName'],
-            $candidateData['lastName'],
             $candidateData['firstName'] . ' ' . $candidateData['lastName'],
-            ( $EEOSettingsRS['enabled'] == 1 && $EEOSettingsRS['genderTracking'] == 1 && !empty($candidateData['eeoGender']) ?
-                ( strtolower($candidateData['eeoGender']) == 'f' ? __('Dear Mrs.') : __('Dear Mr.') ) :
-                        __('Hello') 
-            ),
             $candidateData['firstName'],
             $candidateData['firstName']
         );
@@ -1606,6 +1573,7 @@ class CandidatesUI extends UserInterface
         {
             $allowEventReminders = false;
         }
+
         $this->_template->assign('candidateID', $candidateID);
         $this->_template->assign('pipelineRS', $pipelineRS);
         $this->_template->assign('statusRS', $statusRS);
@@ -1619,7 +1587,6 @@ class CandidatesUI extends UserInterface
         $this->_template->assign('emailDisabled', $emailDisabled);
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('isJobOrdersMode', false);
-        $this->_template->assign('sessionCookie', $_SESSION['OSATS']->getCookie());
         $this->_template->display(
             './modules/candidates/AddActivityChangeStatusModal.tpl'
         );
@@ -2807,8 +2774,6 @@ class CandidatesUI extends UserInterface
 
             if ($statusChanged && $this->isChecked('triggerEmail', $_POST))
             {
-                $subject = $this->getTrimmedInput('subject', $_POST);
-
                 $customMessage = $this->getTrimmedInput('customMessage', $_POST);
 
                 // FIXME: Actually validate the e-mail address?
@@ -2856,7 +2821,7 @@ class CandidatesUI extends UserInterface
 
             /* Set the pipeline entry's status, but don't send e-mails for now. */
             $pipelines->setStatus(
-                $candidateID, $regardingID, $statusID, $email, $subject, $customMessage
+                $candidateID, $regardingID, $statusID, $email, $customMessage
             );
 
             /* If status = placed, and open positions > 0, reduce number of open positions by one. */
@@ -3104,8 +3069,8 @@ class CandidatesUI extends UserInterface
                 $destination,
                 $emailSubject,
                 $emailBody,
-                EMAIL_SEND_HTML,
-                EMAIL_WITH_SIGNATURE 
+                true,
+                true
             );
 
             $this->_template->assign('active', $this);
