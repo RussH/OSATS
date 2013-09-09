@@ -166,6 +166,7 @@ $output = "<data>\n" .
               "    <errormessage></errormessage>\n" .
               "    <statusChangeTemplateSubject><![CDATA[" . $statusChangeTemplateSubject . "]]></statusChangeTemplateSubject>\n" . 
               "    <statusChangeTemplate><![CDATA[" . $statusChangeTemplate . "]]></statusChangeTemplate>\n" .
+              "    <statusChangeEmailDisabled>" . $emailDisabled . "</statusChangeEmailDisabled>\n" .
               "</data>\n";
 
 /* Send back the XML data. */
