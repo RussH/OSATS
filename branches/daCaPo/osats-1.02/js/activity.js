@@ -674,16 +674,17 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
         }
         else
         {
+            sendEmailSpan.style.display = 'inline';
             if (statusTriggersEmailArray[statusSelectList.selectedIndex-1] == 1 || emailIsDisabled.value == "0")
             {
-                sendEmailSpan.style.display = 'inline';
-                triggerEmail.checked = false;
+//                sendEmailSpan.style.display = 'inline';
+//                triggerEmail.checked = false;
             }
             else
             {
-                sendEmailSpan.style.display = 'inline';
-                sendEmailRow.style.display = 'inline';
-                triggerEmail.checked = true;
+//                sendEmailSpan.style.display = 'inline';
+//                sendEmailRow.style.display = 'inline';
+//                triggerEmail.checked = true;
             }
             AS_onSendEmailChange('triggerEmail', 'sendEmailCheckTR', 'visibleTR');
 
@@ -696,6 +697,15 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
 
             subject.value = $arrEmail['subject'];
             emailTextOriginal.value = $arrEmail['text'];
+            if($arrEmail['emailDisabled'] == 1) {
+                triggerEmail.checked = false;
+                sendEmailRow.style.display = 'none';
+            } else {
+                triggerEmail.checked = true;
+                sendEmailRow.style.display = 'inline';
+            }
+
+            AS_onSendEmailChange('triggerEmail', 'sendEmailCheckTR', 'visibleTR');
 
             AS_onChangeStatusChangeGenerateEmail(
                 emailText,
@@ -782,6 +792,7 @@ function getEmailTextOriginal(candidateID, jobOrderID, statusID, sessionCookie)
     $ret = new Array();
     $ret['subject'] = http.responseXML.getElementsByTagName('statusChangeTemplateSubject')[0].firstChild.data;
     $ret['text'] = http.responseXML.getElementsByTagName('statusChangeTemplate')[0].firstChild.data.replace(/<br \/>/g, "\r\n");
+    $ret['emailDisabled'] = http.responseXML.getElementsByTagName('statusChangeEmailDisabled')[0].firstChild.data;
     return $ret;
 }
 
