@@ -371,8 +371,33 @@ if (MYTABPOS == 'top') {
                 <img src="images/indicator.gif" alt="" id="ajaxPipelineTableIndicator" />
             </p>
 
-            <div id="ajaxPipelineTable">
-            </div>
+            <div id="ajaxPipelineTable"></div>
+            <input type="checkbox" name="select_all" onclick="selectAll_candidates(this)" title="Select all candidates" /> <a href="javascript:void(0);" onclick="exportFromPipeline()" title="Export selected candidates">Export</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <script type="text/javascript">
+            	function exportFromPipeline(){
+<?php
+    $params = array(
+        'sortBy' => 'dateModifiedSort',
+        'sortDirection' => 'DESC',
+        'filterVisible' => false,
+        'rangeStart' => 0,
+        'maxResults' => 100000000,
+        'exportIDs' => '<dynamic>',
+        'noSaveParameters' => true);
+
+    $instance_name = 'candidates:candidatesListByViewDataGrid';
+    $instance_md5 = md5($instance_name);
+?>
+                    var exportArray<?= $instance_md5 ?> = getSelected_candidates();
+                    if (exportArray<?= $instance_md5 ?>.length>0) {
+                        window.location.href='<?php echo osatutil::getIndexName(); ?>?m=export&a=exportByDataGrid&i=<?php echo urlencode($instance_name); ?>&p=<?php echo urlencode(serialize($params)) ?>&dynamicArgument<?php echo $instance_md5; ?>=' + urlEncode(serializeArray(exportArray<?= $instance_md5 ?>));
+                    } else {
+                        alert('No data selected');
+                    }
+                }
+
+
+            </script>
             <script type="text/javascript">
                 PipelineJobOrder_populate(<?php $this->_($this->data['jobOrderID']); ?>, 0, <?php $this->_($this->pipelineEntriesPerPage); ?>, 'dateCreatedInt', 'desc', <?php if ($this->isPopup) echo(1); else echo(0); ?>, 'ajaxPipelineTable', '<?php echo($this->sessionCookie); ?>', 'ajaxPipelineTableIndicator', '<?php echo(osatutil::getIndexName()); ?>');
             </script>
