@@ -324,12 +324,13 @@ CREATE TABLE `candidate_joborder_status` (
 INSERT INTO `candidate_joborder_status` (`candidate_joborder_status_id`, `short_description`, `can_be_scheduled`, `triggers_email`, `is_enabled`) VALUES
 (100, 'No Contact', 0, 0, 1),
 (200, 'Contacted', 0, 0, 1),
-(300, 'Qualifying', 0, 1, 1),
-(400, 'Submitted', 0, 1, 1),
-(500, 'Interviewing', 0, 1, 1),
-(600, 'Offered', 0, 1, 1),
+(300, 'Qualifying', 0, 0, 1),
+(400, 'Submitted', 0, 0, 1),
+(500, 'Interviewing', 0, 0, 1),
+(600, 'Offered', 0, 0, 1),
 (700, 'Client Declined', 0, 0, 1),
-(800, 'Placed', 0, 1, 1),
+(710, 'Candidate Declined', 0, 0, 1),
+(800, 'Placed', 0, 0, 1),
 (0, 'No Status', 0, 0, 1),
 (650, 'Not in Consideration', 0, 0, 1),
 (250, 'Candidate Responded', 0, 0, 1);
@@ -754,6 +755,7 @@ CREATE TABLE `email_template` (
   `allow_substitution` int(1) NOT NULL default '0',
   `site_id` int(11) NOT NULL default '0',
   `tag` varchar(255) collate utf8_unicode_ci default NULL,
+  `subject` varchar(255) collate utf8_unicode_ci default NULL,
   `title` varchar(255) collate utf8_unicode_ci default NULL,
   `possible_variables` text collate utf8_unicode_ci,
   `disabled` int(1) default '0',
@@ -765,13 +767,13 @@ CREATE TABLE `email_template` (
 --
 
 INSERT INTO `email_template` (`email_template_id`, `text`, `allow_substitution`, `site_id`, `tag`, `title`, `possible_variables`, `disabled`) VALUES
-(20, '* Auto generated message. Please DO NOT reply *\r\n%DATETIME%\r\n\r\nDear %CANDFULLNAME%,\r\n\r\nThis E-Mail is a notification that your status in our database has been changed for the position %JBODTITLE% (%JBODCLIENT%).\r\n\r\nYour previous status was <B>%CANDPREVSTATUS%</B>.\r\nYour new status is <B>%CANDSTATUS%</B>.\r\n\r\nTake care,\r\n%USERFULLNAME%\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_STATUSCHANGE', 'Status Changed (Sent to Candidate)', '%CANDSTATUS%%CANDOWNER%%CANDFIRSTNAME%%CANDFULLNAME%%CANDPREVSTATUS%%JBODCLIENT%%JBODTITLE%', 0),
-(28, '%DATETIME%\r\n\r\nDear %CANDOWNER%,\r\n\r\nThis E-Mail is a notification that a Candidate has been assigned to you.\r\n\r\nCandidate Name: %CANDFULLNAME%\r\nCandidate URL: %CANDCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCANDIDATE', 'Candidate Assigned (Sent to Assigned Recruiter)', '%CANDOWNER%%CANDFIRSTNAME%%CANDFULLNAME%%CANDCATSURL%', 0),
-(27, '%DATETIME%\r\n\r\nDear %JBODOWNER%,\r\n\r\nThis E-Mail is a notification that a Job Order has been assigned to you.\r\n\r\nJob Order Title: %JBODTITLE%\r\nJob Order Client: %JBODCLIENT%\r\nJob Order ID: %JBODID%\r\nJob Order URL: %JBODCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNJOBORDER', 'Job Order Assigned (Sent to Assigned Recruiter)', '%JBODOWNER%%JBODTITLE%%JBODCLIENT%%JBODCATSURL%%JBODID%', 0),
-(26, '%DATETIME%\r\n\r\nDear %CONTOWNER%,\r\n\r\nThis E-Mail is a notification that a Contact has been assigned to you.\r\n\r\nContact Name: %CONTFULLNAME%\r\nContact Client: %CONTCLIENTNAME%\r\nContact URL: %CONTCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCONTACT', 'Contact Assigned (Sent to Assigned Recruiter)', '%CONTOWNER%%CONTFIRSTNAME%%CONTFULLNAME%%CONTCLIENTNAME%%CONTCATSURL%', 0),
-(25, '%DATETIME%\r\n\r\nDear %CLNTOWNER%,\r\n\r\nThis E-Mail is a notification that a Client has been assigned to you.\r\n\r\nClient Name: %CLNTNAME%\r\nClient URL %CLNTCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCLIENT', 'Client Assigned (Sent to Assigned Recruiter)', '%CLNTOWNER%%CLNTNAME%%CLNTCATSURL%', 0),
-(30, '* This is an auto-generated message. Please do not reply. *\r\n%DATETIME%\r\n\r\nDear %CANDFULLNAME%,\r\n\r\nThank you for applying to the %JBODTITLE% position with our online career portal! Your application has been entered into our system and someone will review it shortly.\r\n\r\n--\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_CANDIDATEAPPLY', 'Candidate Application Received (Sent to Candidate using Career Portal)', '%CANDFIRSTNAME%%CANDFULLNAME%%JBODCLIENT%%JBODTITLE%%JBODOWNER%', 0),
-(31, '%DATETIME%\r\n\r\nDear %JBODOWNER%,\r\n\r\nThis e-mail is a notification that a candidate has applied to your job order through the online candidate portal.\r\n\r\nJob Order: %JBODTITLE%\r\nCandidate Name: %CANDFULLNAME%\r\nCandidate URL: %CANDCATSURL%\r\nJob Order URL: %JBODCATSURL%\r\n\r\n--\r\nCATS\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_CANDIDATEPORTALNEW', 'Candidate Application Received (Sent to Owner of Job Order from Career Portal)', '%CANDFIRSTNAME%%CANDFULLNAME%%JBODOWNER%%JBODTITLE%%JBODCLIENT%%JBODCATSURL%%JBODID%%CANDCATSURL%', 0);
+(20, '* Auto generated message. Please DO NOT reply *\r\n%DATETIME%\r\n\r\nDear %CANDFULLNAME%,\r\n\r\nThis E-Mail is a notification that your status in our database has been changed for the position %JBODTITLE% (%JBODCLIENT%).\r\n\r\nYour previous status was <B>%CANDPREVSTATUS%</B>.\r\nYour new status is <B>%CANDSTATUS%</B>.\r\n\r\nTake care,\r\n%USERFULLNAME%\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_STATUSCHANGE', null, 'Status Changed (Sent to Candidate)', '%CANDSTATUS%%CANDOWNER%%CANDFIRSTNAME%%CANDFULLNAME%%CANDPREVSTATUS%%JBODCLIENT%%JBODTITLE%', 0),
+(28, '%DATETIME%\r\n\r\nDear %CANDOWNER%,\r\n\r\nThis E-Mail is a notification that a Candidate has been assigned to you.\r\n\r\nCandidate Name: %CANDFULLNAME%\r\nCandidate URL: %CANDCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCANDIDATE', null, 'Candidate Assigned (Sent to Assigned Recruiter)', '%CANDOWNER%%CANDFIRSTNAME%%CANDFULLNAME%%CANDCATSURL%', 0),
+(27, '%DATETIME%\r\n\r\nDear %JBODOWNER%,\r\n\r\nThis E-Mail is a notification that a Job Order has been assigned to you.\r\n\r\nJob Order Title: %JBODTITLE%\r\nJob Order Client: %JBODCLIENT%\r\nJob Order ID: %JBODID%\r\nJob Order URL: %JBODCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNJOBORDER', null, 'Job Order Assigned (Sent to Assigned Recruiter)', '%JBODOWNER%%JBODTITLE%%JBODCLIENT%%JBODCATSURL%%JBODID%', 0),
+(26, '%DATETIME%\r\n\r\nDear %CONTOWNER%,\r\n\r\nThis E-Mail is a notification that a Contact has been assigned to you.\r\n\r\nContact Name: %CONTFULLNAME%\r\nContact Client: %CONTCLIENTNAME%\r\nContact URL: %CONTCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCONTACT', null, 'Contact Assigned (Sent to Assigned Recruiter)', '%CONTOWNER%%CONTFIRSTNAME%%CONTFULLNAME%%CONTCLIENTNAME%%CONTCATSURL%', 0),
+(25, '%DATETIME%\r\n\r\nDear %CLNTOWNER%,\r\n\r\nThis E-Mail is a notification that a Client has been assigned to you.\r\n\r\nClient Name: %CLNTNAME%\r\nClient URL %CLNTCATSURL%\r\n\r\nTake care,\r\nCATS \r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_OWNERSHIPASSIGNCLIENT', null, 'Client Assigned (Sent to Assigned Recruiter)', '%CLNTOWNER%%CLNTNAME%%CLNTCATSURL%', 0),
+(30, '* This is an auto-generated message. Please do not reply. *\r\n%DATETIME%\r\n\r\nDear %CANDFULLNAME%,\r\n\r\nThank you for applying to the %JBODTITLE% position with our online career portal! Your application has been entered into our system and someone will review it shortly.\r\n\r\n--\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_CANDIDATEAPPLY', null, 'Candidate Application Received (Sent to Candidate using Career Portal)', '%CANDFIRSTNAME%%CANDFULLNAME%%JBODCLIENT%%JBODTITLE%%JBODOWNER%', 0),
+(31, '%DATETIME%\r\n\r\nDear %JBODOWNER%,\r\n\r\nThis e-mail is a notification that a candidate has applied to your job order through the online candidate portal.\r\n\r\nJob Order: %JBODTITLE%\r\nCandidate Name: %CANDFULLNAME%\r\nCandidate URL: %CANDCATSURL%\r\nJob Order URL: %JBODCATSURL%\r\n\r\n--\r\nCATS\r\n%SITENAME%', 1, 1, 'EMAIL_TEMPLATE_CANDIDATEPORTALNEW', null, 'Candidate Application Received (Sent to Owner of Job Order from Career Portal)', '%CANDFIRSTNAME%%CANDFULLNAME%%JBODOWNER%%JBODTITLE%%JBODCLIENT%%JBODCATSURL%%JBODID%%CANDCATSURL%', 0);
 
 -- --------------------------------------------------------
 
