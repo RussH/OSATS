@@ -46,12 +46,13 @@ $jobOrderID = $_REQUEST['jobOrderID'];
 
 /* Decode and trim the activity notes from the company. */
 $activityNote = trim(urldecode($_REQUEST['notes']));
-$activityDate = trim(urldecode($_REQUEST['date']));
+$activityDate = new DateTime(trim(urldecode($_REQUEST['date'])));
+$activityDate = $activityDate->format('Y-m-d');
 $activityHour = trim(urldecode($_REQUEST['hour']));
 $activityMinute = trim(urldecode($_REQUEST['minute']));
 $activityAMPM = trim(urldecode($_REQUEST['ampm']));
 
-if (!DateUtility::validate('-', $activityDate, DATE_FORMAT_MMDDYY))
+if (!DateUtility::validate('-', $activityDate, DATE_FORMAT_YYYYMMDD))
 {
     die('Invalid availability date.');
     return;
@@ -65,9 +66,7 @@ $time = strtotime(
 /* Create MySQL date string w/ 24hr time (YYYY-MM-DD HH:MM:SS). */
 $date = sprintf(
     '%s %s',
-    DateUtility::convert(
-        '-', $activityDate, DATE_FORMAT_MMDDYY, DATE_FORMAT_YYYYMMDD
-    ),
+    $activityDate,
     date('H:i:00', $time)
 );
 

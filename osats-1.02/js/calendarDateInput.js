@@ -380,6 +380,7 @@ function storedMonthObject(DateFormat, DateYear, DateMonth, DateDay) {
    // Define the date-part delimiter
    if (DateFormat.indexOf('/') >= 0) var Delimiter = '/';
    else if (DateFormat.indexOf('-') >= 0) var Delimiter = '-';
+   else if (DateFormat.indexOf('.') >= 0) var Delimiter = '.';
    else var Delimiter = '';
    // Determine the order of the months and days
    if (/DD?.?((MON)|(MM?M?))/.test(DateFormat)) {
@@ -517,10 +518,10 @@ function calendarObject(DateName, DateFormat, DefaultDate) {
             }
             else SetGoodDate(this, true);
          }
-         else if (/(-|\/)(\d{2,4})$/.test(DefaultDate)) { // Year is at the end
+         else if (/(-|\/|\.)(\d{2,4})$/.test(DefaultDate)) { // Year is at the end
             var YearPart = parseInt(GetGoodYear(RegExp.$2), 10);
             // Determine the order of the months and days
-            if (/^(\w{1,3})(-|\/)(\w{1,3})(-|\/)/.test(DefaultDate)) {
+            if (/^(\w{1,3})(-|\/|\.)(\w{1,3})(-|\/|\.)/.test(DefaultDate)) {
                if (this.format.substr(0,1) == 'D') { // Starts with days
                   var DayPart = RegExp.$1;
                   var MonthPart = RegExp.$3;
@@ -547,7 +548,7 @@ function DateInput(DateName, Required, DateFormat, DefaultDate, TabIndex)
 
     DateFormat = DateFormat.toUpperCase();
 
-    if (!(/^(Y{2,4}(-|\/)?)?((MON)|(MM?M?)|(DD?))(-|\/)?((MON)|(MM?M?)|(DD?))((-|\/)Y{2,4})?$/i.test(DateFormat)))
+    if (!(/^((Y{2,4}(-|\/)?)|(((MON)|(MM?M?))(-|\/))|(DD?\.))((MON)|(MM?M?)|(DD?))((-|\/|\.)Y{2,4})?$/i.test(DateFormat)))
     {
         alert(
             'Error: The specified date format for the \'' + DateName +
@@ -715,7 +716,7 @@ function DateInputForDOM(DateName, Required, DateFormat, DefaultDate, TabIndex)
 
     DateFormat = DateFormat.toUpperCase();
 
-    if (!(/^(Y{2,4}(-|\/)?)?((MON)|(MM?M?)|(DD?))(-|\/)?((MON)|(MM?M?)|(DD?))((-|\/)Y{2,4})?$/i.test(DateFormat)))
+    if (!(/^((Y{2,4}(-|\/)?)|(((MON)|(MM?M?))(-|\/))|(DD?\.))((MON)|(MM?M?)|(DD?))((-|\/|\.)Y{2,4})?$/i.test(DateFormat)))
     {
         alert(
             'Error: The specified date format for the \'' + DateName +
@@ -908,6 +909,14 @@ function SetDateInputDate(DateName, DateFormat, NewDate)
         object.setPicked(year, (month - 1), day);
     }
     else if (DateFormat == 'DD-MM-YY' && (/^(\d{2})-(\d{2})-(\d{2})$/.test(NewDate)))
+    {
+        year = parseInt(GetGoodYear(RegExp.$3), 10);
+        day = parseInt(RegExp.$1, 10);
+        month = parseInt(RegExp.$2, 10);
+
+        object.setPicked(year, (month - 1), day);
+    }
+    else if (DateFormat == 'DD.MM.YY' && (/^(\d{2})\.(\d{2})\.(\d{2})$/.test(NewDate)))
     {
         year = parseInt(GetGoodYear(RegExp.$3), 10);
         day = parseInt(RegExp.$1, 10);

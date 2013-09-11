@@ -251,7 +251,8 @@ function Activity_editEntry(activityID, dataItemID, dataItemType, sessionCookie)
         /* Date editor. */
         var dateSpan = document.createElement('span');
         var dateAndTime = unEscapeHTML(dateTD.innerHTML.replace(/(<([^>]+)>)/ig,""));
-        dateSpan.innerHTML = DateInputForDOM('dateEditActivity' + activityID, true, 'MM-DD-YY', dateAndTime.substr(0,dateAndTime.indexOf(' ')), -1);
+        // FIXME: make date format configurable
+        dateSpan.innerHTML = DateInputForDOM('dateEditActivity' + activityID, true, 'DD.MM.YY', dateAndTime.substr(0,dateAndTime.indexOf(' ')), -1);
 
         var timeString = dateAndTime.substr(dateAndTime.indexOf(' ')+2);
         var hourString = timeString.substr(0,timeString.indexOf(':'));
