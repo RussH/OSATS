@@ -20,7 +20,7 @@ else
 /* Retrieve all the value from the System table to check if OSATS has been installed yet.
    * If the value is null then its false, if the value is 1 then its true.
 */
-$myServer = mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
+$myServer = ($GLOBALS["___mysqli_ston"] = mysqli_connect(DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS));
 	if (!$myServer)
 		{
 		/* dbserver does not exist or is incorrect. Run installation process*/
@@ -29,7 +29,7 @@ $myServer = mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
 		}
 	else
 		{
-			$myDB = mysql_select_db(DATABASE_NAME);
+			$myDB = ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . constant('DATABASE_NAME')));
 			if (!$myDB)
 				{/* dbserver exists but no db found.. Run installation process*/
 				include('_install/install.php');
@@ -37,11 +37,13 @@ $myServer = mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
 				}
 		}
 
-$result = mysql_query("SELECT Installed FROM system");
+$result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT Installed FROM system");
 
 if (!$result==null)
-	$row = mysql_result( $result, 0);
-	if ($row==null)//if the table does not have a 1 in it, then run the setup wizard.
+        $result->data_seek(0);
+        $row = $result->fetch_array();
+
+	if ($row[0]==null)//if the table does not have a 1 in it, then run the setup wizard.
 	{
     	include('_install/install.php');
 		die();

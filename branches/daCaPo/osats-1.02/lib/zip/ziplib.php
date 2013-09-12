@@ -163,7 +163,7 @@ public function queryMultiple($sql)
             continue;
         }
 
-        mysql_query($SQL, $mySQLConnection) or die(mysql_error());
+        mysqli_query( $mySQLConnection, $SQL) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
 }
 

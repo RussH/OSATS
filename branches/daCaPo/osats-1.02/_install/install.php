@@ -42,7 +42,7 @@ function welcome()
 	$dbuname     = $_POST['dbusername'];
 		
 	//test db before continuing.
-	if (!$link = mysql_pconnect($dbhost, $dbuname, $dbpass))
+	if (!$link = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuname,  $dbpass)))
 	{
 		Echo "<h3>Please check your Username and Password for access to the mySQL DB</h3>";
 		?>
@@ -64,15 +64,15 @@ function welcome()
     	@is_writable("dbconfig.php") ? $checks[] = "<h3>The Config.php is writable - GOOD!</h3>" : 
 		$checks[] = "<h3>The dbconfig.php file in the root is not Writable. Please Fix and refresh this page.</h3>";
     
-		if (!function_exists('mysql_get_client_info'))
+		if (!function_exists('mysqli_get_client_info'))
     	{
         	$checks[] = sprintf("<h3>mySQL is not properly installed. Please fix and then refresh this page.</h3>");
     	}
     	else
     	{
-        	version_check('3.23', mysql_get_client_info()) ? $checks[] = sprintf("mySQL is installed - GOOD!",
-            mysql_get_client_info()) : $checks[] = printf("mySQL is not properly installed. Please fix and then refresh this page.",
-            mysql_get_client_info());
+        	version_check('3.23', mysqli_get_client_info()) ? $checks[] = sprintf("mySQL is installed - GOOD!",
+            mysqli_get_client_info()) : $checks[] = printf("mySQL is not properly installed. Please fix and then refresh this page.",
+            mysqli_get_client_info());
     	}
 
     	version_check('4.11', phpversion()) ? $checks[] = sprintf("PHP is installed and acceptable version - GOOD!",
@@ -134,16 +134,16 @@ $dbpass = DATABASE_PASS;
 $dbhost = DATABASE_HOST;
 
 		
-$link = mysql_pconnect($dbhost, $dbuname, $dbpass);
+$link = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuname,  $dbpass));
 
 if (!$link) 
 	{
-    die('Could not connect: ' . mysql_error());
+    die('Could not connect: ' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 	}
 
 	$sql = 'CREATE DATABASE osats';
 
-if (mysql_query($sql, $link)) 
+if (mysqli_query( $link, $sql)) 
 	{
 	echo "<br/><br/><h3>Database created successfully\n</h3>";
 	$myDBGood = true;
@@ -152,10 +152,10 @@ else
 	{
 	//DB already exists - drop and recreate
     $sql = 'DROP DATABASE osats';
-    if (mysql_query($sql, $link))
+    if (mysqli_query( $link, $sql))
     {
     	$sql = 'CREATE DATABASE osats';
-    	if (mysql_query($sql, $link))
+    	if (mysqli_query( $link, $sql))
     	{
 			echo "<br/><br/><h3>Database was dropped and recreated to empty the contents.\n</h3>";
     		$myDBGood = true;
@@ -203,8 +203,8 @@ function load_tables()
 {
 	$installdb = file_get_contents(OSATS_ROOT_PATH . '/db/osatsdb.sql');
 		$mySQL1 = explode(';', $installdb);
-		mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
-		@mysql_select_db(DATABASE_NAME) or die( "Unable to select database");
+		($GLOBALS["___mysqli_ston"] = mysqli_connect(DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS));
+		@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . constant('DATABASE_NAME'))) or die( "Unable to select database");
 		//$link = mysql_pconnect($dbhost, $dbuname, $dbpass);
 		foreach ($mySQL1 as $SQL2)
 		{
@@ -213,22 +213,22 @@ function load_tables()
         		{
 					continue;
         		}
-		mysql_query($SQL2);
+		mysqli_query($GLOBALS["___mysqli_ston"], $SQL2);
 		//mysql_free_result(mysql_query);
 		//echo "<br/>" . $SQL2;
 		
 		//echo $SQL2;
         		
 		}
-		mysql_close();
+		((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 function mark_installed()
 {
 	$myPassword = $_POST['adminpwd'];
 	
-	mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
-	@mysql_select_db(DATABASE_NAME) or die( "Unable to select database");
+	($GLOBALS["___mysqli_ston"] = mysqli_connect(DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS));
+	@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . constant('DATABASE_NAME'))) or die( "Unable to select database");
 	if(MySQL_query("UPDATE system SET Installed = 1"))
 	{
 		echo "<br/><h3>Installed setting has been set to 1</h3>";
@@ -245,15 +245,15 @@ function mark_installed()
 		MySQL_query("UPDATE user SET access_level = 500 WHERE user_name = 'admin'");
 		MySQL_query("UPDATE user SET password = '". $_POST['adminpwd'] . "' WHERE user_name = 'admin'");
 		MySQL_query("UPDATE user SET email = '". $_POST['adminemail'] . "' WHERE user_name = 'admin'");
-		mysql_query("UPDATE site SET name = '" . $_POST['sitename'] . "' WHERE site_id = 1");
-		mysql_query("UPDATE user SET site_id = 1 WHERE user_name = 'admin'");
+		mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE site SET name = '" . $_POST['sitename'] . "' WHERE site_id = 1");
+		mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user SET site_id = 1 WHERE user_name = 'admin'");
 	}
 	else
 	{
 		echo "<br/><h3>Default USER values did NOT set correctly!</h3>";
 	}
 	
-	mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 	
 	?>
 	<div>
