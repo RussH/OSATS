@@ -1051,13 +1051,13 @@ class SettingsUI extends UserInterface
                 case 'ADDFIELD':
                     $args = explode(' ', $command, 4);
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->define(urldecode($args[3]), intval($args[2]));
+                    $extraFields->define(utf8_encode(urldecode($args[3])), intval($args[2]));
                     break;
 
                 case 'DELETEFIELD':
                     $args = explode(' ', $command, 3);
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->remove(urldecode($args[2]));
+                    $extraFields->remove(utf8_encode(urldecode($args[2])));
                     break;
 
                 case 'ADDOPTION':
@@ -1065,7 +1065,7 @@ class SettingsUI extends UserInterface
                     $args2 = explode(':', $args[2]);
 
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->addOptionToColumn(urldecode($args2[0]), urldecode($args2[1]));
+                    $extraFields->addOptionToColumn(utf8_encode(urldecode($args2[0])), utf8_encode(urldecode($args2[1])));
                     break;
 
                 case 'DELETEOPTION':
@@ -1073,7 +1073,7 @@ class SettingsUI extends UserInterface
                     $args2 = explode(':', $args[2]);
 
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->deleteOptionFromColumn(urldecode($args2[0]), urldecode($args2[1]));
+                    $extraFields->deleteOptionFromColumn(utf8_encode(urldecode($args2[0])), utf8_encode(urldecode($args2[1])));
                     break;
 
                 case 'SWAPFIELDS':
@@ -1081,7 +1081,7 @@ class SettingsUI extends UserInterface
                     $args2 = explode(':', $args[2]);
 
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->swapColumns(urldecode($args2[0]), urldecode($args2[1]));
+                    $extraFields->swapColumns(utf8_encode(urldecode($args2[0])), utf8_encode(urldecode($args2[1])));
                     break;
 
                 case 'RENAMEROW':
@@ -1089,7 +1089,7 @@ class SettingsUI extends UserInterface
                     $args2 = explode(':', $args[2]);
 
                     $extraFields = new ExtraFields($this->_siteID, intval($args[1]));
-                    $extraFields->renameColumn(urldecode($args2[0]), urldecode($args2[1]));
+                    $extraFields->renameColumn(utf8_encode(urldecode($args2[0])), utf8_encode(urldecode($args2[1])));
                     break;
             }
         }
