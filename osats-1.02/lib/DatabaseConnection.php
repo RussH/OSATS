@@ -81,12 +81,12 @@ class DatabaseConnection
      */
     public function connect()
     {
-        $this->_connection = @mysql_connect(
-            DATABASE_HOST, DATABASE_USER, DATABASE_PASS
-        );
+        $this->_connection = @($GLOBALS["___mysqli_ston"] = mysqli_connect(
+            DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS
+        ));
         if (!$this->_connection)
         {
-            $error = mysql_error();
+            $error = ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 
             die(
                 '<!-- NOSPACEFILTER --><p style="background: #ec3737; padding:'
@@ -97,10 +97,10 @@ class DatabaseConnection
             return false;
         }
 
-        $isDBSelected = @mysql_select_db(DATABASE_NAME, $this->_connection);
+        $isDBSelected = @((bool)mysqli_query( $this->_connection, "USE " . constant('DATABASE_NAME')));
         if (!$isDBSelected)
         {
-            $error = mysql_error($this->_connection);
+            $error = ((is_object($this->_connection)) ? mysqli_error($this->_connection) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 
             die(
                 '<!-- NOSPACEFILTER --><p style="background: #ec3737; '
@@ -111,9 +111,9 @@ class DatabaseConnection
             return false;
         }
 
-	if (!mysql_set_charset(DATABASE_CHARSET, $this->_connection))
+	if (!mysqli_set_charset($this->_connection, DATABASE_CHARSET))
         {
-            $error = mysql_error($this->_connection);
+            $error = ((is_object($this->_connection)) ? mysqli_error($this->_connection) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 
             die(
                 '<!-- NOSPACEFILTER --><p style="background: #ec3737; '
@@ -154,10 +154,10 @@ class DatabaseConnection
         /* Don't limit the execution time of queries. */
         set_time_limit(0);
 
-        $this->_queryResult = mysql_query($query, $this->_connection);
+        $this->_queryResult = mysqli_query( $this->_connection, $query);
         if (!$this->_queryResult && !$ignoreErrors)
         {
-            $error = mysql_error($this->_connection);
+            $error = ((is_object($this->_connection)) ? mysqli_error($this->_connection) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 
             echo (
                 '<!-- NOSPACEFILTER --><p style="background: #ec3737; padding:'
@@ -225,7 +225,7 @@ class DatabaseConnection
             $this->query($query);
         }
 
-        $numRows = mysql_num_rows($this->_queryResult);
+        $numRows = mysqli_num_rows($this->_queryResult);
         if ($numRows === false)
         {
             return false;
@@ -239,7 +239,9 @@ class DatabaseConnection
             return false;
         }
 
-        return mysql_result($this->_queryResult, $row, $column);
+        $this->_queryResult->data_seek($row);
+        $datarow = $this->_queryResult->fetch_array();
+        return $datarow[$column];
     }
 
     /**
@@ -276,7 +278,7 @@ class DatabaseConnection
             $this->query($query);
         }
 
-        $recordSet = mysql_fetch_assoc($this->_queryResult);
+        $recordSet = mysqli_fetch_assoc($this->_queryResult);
 
         if (empty($recordSet))
         {
@@ -322,7 +324,7 @@ class DatabaseConnection
         $recordSetArray = array();
 
         /* Store all rows in $recordSetArray; */
-        while (($recordSet = mysql_fetch_assoc($this->_queryResult)))
+        while (($recordSet = mysqli_fetch_assoc($this->_queryResult)))
         {
             $recordSetArray[] = $recordSet;
         }
@@ -344,7 +346,7 @@ class DatabaseConnection
             $this->query($query);
         }
 
-        return mysql_num_rows($this->_queryResult);
+        return mysqli_num_rows($this->_queryResult);
     }
 
     /**
@@ -355,7 +357,7 @@ class DatabaseConnection
      */
     public function isEOF()
     {
-        $rowCount = mysql_num_rows($this->_queryResult);
+        $rowCount = mysqli_num_rows($this->_queryResult);
         if (!$rowCount)
         {
             return true;
@@ -434,7 +436,7 @@ class DatabaseConnection
      */
     public function escapeString($string)
     {
-        return mysql_real_escape_string($string, $this->_connection);
+        return mysqli_real_escape_string( $this->_connection, $string);
     }
 
     /**
@@ -531,7 +533,7 @@ class DatabaseConnection
      */
     public function getError()
     {
-        return mysql_error($this->_connection);
+        return ((is_object($this->_connection)) ? mysqli_error($this->_connection) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     }
 
     /**
@@ -545,7 +547,7 @@ class DatabaseConnection
      */
     public function getLastInsertID()
     {
-        return @mysql_insert_id($this->_connection);
+        return @((is_null($___mysqli_res = mysqli_insert_id($this->_connection))) ? false : $___mysqli_res);
     }
 
     /**
@@ -557,7 +559,7 @@ class DatabaseConnection
      */
     public function getAffectedRows()
     {
-        return @mysql_affected_rows($this->_connection);
+        return @mysqli_affected_rows($this->_connection);
     }
 
     /**

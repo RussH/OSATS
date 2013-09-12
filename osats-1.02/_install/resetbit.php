@@ -5,8 +5,8 @@
 * OSATS
 */
 include_once ('../dbconfig.php');
-mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
-mysql_select_db("osats");
+($GLOBALS["___mysqli_ston"] = mysqli_connect(DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS));
+((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE osats"));
 if(MySQL_query("UPDATE system SET Installed = NULL"))
 {
 	
@@ -23,7 +23,7 @@ else
 {
 	echo "<h3>Unable to reset!</h3>";
 }
-mysql_close();
+((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
 ?>
 		<div>

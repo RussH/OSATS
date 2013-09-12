@@ -126,14 +126,14 @@ if ($action == 'backup')
     // GET AND COMPRESS ATTACHMENTS
 
     $sql = "SELECT COUNT(*) AS attachmentCount FROM attachment WHERE site_id = " . $siteID;
-    $rs = mysql_query($sql);
-    $row = mysql_fetch_assoc($rs);
+    $rs = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
+    $row = mysqli_fetch_assoc($rs);
     $totalAttachments = $row['attachmentCount'];
 
     $sql = "SELECT * FROM attachment WHERE site_id = " . $siteID;
-    $rs = mysql_query($sql);
+    $rs = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
     $attachment = 0;
-    while ($recordSet = mysql_fetch_assoc($rs))
+    while ($recordSet = mysqli_fetch_assoc($rs))
     {
         ++$attachment;
 

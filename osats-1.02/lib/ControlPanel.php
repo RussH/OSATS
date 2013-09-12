@@ -118,9 +118,9 @@ class ControlPanel
         $uIDName = $this->getPostValue('uIDName');
         $sql = $this->getTablesSQL(sprintf('%s = %d', addslashes($uIDName), addslashes($uID)));
         $rs = $this->_db->query($sql);
-        if ($rs && mysql_num_rows($rs) > 0)
+        if ($rs && mysqli_num_rows($rs) > 0)
         {
-            $row = mysql_fetch_array($rs, MYSQL_ASSOC);
+            $row = mysqli_fetch_array($rs,  MYSQLI_ASSOC);
             if (!$row)
             {
                 return $this->getException('Bad or expired identifier', 'The operation you attempted cannot complete '
@@ -179,7 +179,7 @@ class ControlPanel
                     . 'because the unique identifier no longer exists. Did you perhaps use your browser\'s <b>back</b> '
                     . 'button?');
             }
-            $row = mysql_fetch_array($rs, MYSQL_ASSOC);
+            $row = mysqli_fetch_array($rs,  MYSQLI_ASSOC);
             if (!$row)
             {
                 return $this->getListView();
@@ -388,9 +388,9 @@ class ControlPanel
                         }
                         else
                         {
-                            $updatedRows += mysql_affected_rows();
+                            $updatedRows += mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
                             if ($addRecord && $callBackPrimaryKey)
-                                $row[$callBackPrimaryKey] = mysql_insert_id();
+                                $row[$callBackPrimaryKey] = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
                             if ($callBack)
                                 $callBack($row);
                         }
@@ -787,7 +787,7 @@ class ControlPanel
             if ($currencySql != '')
             {
                 $rs = $this->_db->query($sql = $this->getTablesSQL($searchSql, '', $currencySql));
-                $currencySums = mysql_fetch_array($rs, MYSQL_ASSOC);
+                $currencySums = mysqli_fetch_array($rs,  MYSQLI_ASSOC);
             }
         }
 
@@ -832,7 +832,7 @@ class ControlPanel
         $fieldOffset = true;
 
         $rowNum = 0;
-        while ($row = mysql_fetch_array($rs, MYSQL_ASSOC))
+        while ($row = mysqli_fetch_array($rs,  MYSQLI_ASSOC))
         {
             $numColumns = 0;
             $infoHtml .= "<tr>\n";
@@ -1416,7 +1416,7 @@ class ControlPanel
         $this->_tables[$name]['fields'] = array();
         // Fetch the fields from the table
         $rs = $this->_db->query('SHOW FIELDS FROM ' . $name);
-        while ($row = mysql_fetch_array($rs, MYSQL_ASSOC))
+        while ($row = mysqli_fetch_array($rs,  MYSQLI_ASSOC))
         {
             $this->_tables[$name]['fields'][$row['Field']] = array(
                 'type' => $row['Type'],

@@ -172,12 +172,12 @@ class ModuleUtility
         $db->getAdvisoryLock('OSATSUpdateLock', 120);
       	//this is only until I finish the entire rewrite, then I will pair things up. Jamin
 		include('./dbconfig.php');
-		$myServer = mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
-		$myDB = mysql_select_db(DATABASE_NAME);
-		$sql = mysql_query("SELECT * FROM moduleinfo ORDER BY ordernum ASC");
+		$myServer = ($GLOBALS["___mysqli_ston"] = mysqli_connect(DATABASE_HOST,  DATABASE_USER,  DATABASE_PASS));
+		$myDB = ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . constant('DATABASE_NAME')));
+		$sql = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM moduleinfo ORDER BY ordernum ASC");
 		//$num_rows = mysql_num_rows($sql);
 		
-		while ($myrow = mysql_fetch_array($sql))
+		while ($myrow = mysqli_fetch_array($sql))
 		{ 
 			$moduleName = strtolower($myrow['name']);
 			$moduleClass = $myrow['class'];
