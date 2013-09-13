@@ -45,6 +45,10 @@ function _e($msg, $args=array(), $catalogue='', $language='') {
   echo i18n::__($msg, $args, $catalogue, $language);
 }
 
+function __r($msg, $args=array(), $catalogue='', $language='') {
+    return i18n::__r($msg, $args, $catalogue, $language);
+}
+
 /* 
     main class for internationalization (i18n)
     needs: I18N_DEFAULT, I18N_PATH
@@ -67,6 +71,27 @@ class i18n {
     if (!isset(self::$msg[self::$lg][self::$cat])) {            // check if ini-file already parsed & loaded
       $ini = self::cIniPath . self::$lg . '.' . self::$cat . '.ini';
       if (is_readable($ini)) self::$msg[self::$lg][self::$cat] = parse_ini_file($ini);
+    }
+
+    if (!isset(self::$msg[self::$lg][self::$cat][$msg])) {      // not found...
+      return '*'.$msg.'*';
+    } elseif (empty($args)) {
+      return self::$msg[self::$lg][self::$cat][$msg];
+    } else {
+      if (!is_array($args)) $args = array($args);
+      return vsprintf(self::$msg[self::$lg][self::$cat][$msg], $args);
+    }
+  }
+
+  public static function __r($msg, $args=array(), $catalogue='', $language='') {
+    if (!empty($catalogue)) self::$cat = catalogue;
+    if (!empty($language))  self::$lg = $language;
+
+    self::$lg = substr(self::$lg, 0, 2);                        // check that language token corresponds to ISO 639-1
+    
+    if (!isset(self::$msg[self::$lg][self::$cat])) {            // check if ini-file already parsed & loaded
+      $ini = self::cIniPath . self::$lg . '.' . self::$cat . '.ini';
+      if (is_readable($ini)) self::$msg[self::$lg][self::$cat] = array_flip(parse_ini_file($ini));
     }
 
     if (!isset(self::$msg[self::$lg][self::$cat][$msg])) {      // not found...
