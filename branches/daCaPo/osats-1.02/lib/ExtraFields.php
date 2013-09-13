@@ -605,7 +605,7 @@ class ExtraFields
 
                 case EXTRA_FIELD_TEXTAREA:
                     $extraFields[$index]['addHTML'] = '
-                        <textarea id="extraField'.$index.'" class="inputbox" name="extraField'.$index.'" style="width: 150px;" ></textarea>
+                        <textarea id="extraField'.$index.'" class="inputbox" name="extraField'.$index.'" style="width: 400px;" ></textarea>
                     ';
                     $extraFields[$index]['careersAddHTML'] = '
                         <textarea id="extraField'.$index.'" class="inputBoxArea" name="extraField'.$index.'"></textarea>
@@ -658,7 +658,7 @@ class ExtraFields
                 case EXTRA_FIELD_TEXT:
                 default:
                     $extraFields[$index]['addHTML'] = '
-                        <input id="extraField'.$index.'" class="inputbox" name="extraField'.$index.'" style="width: 150px;"  />
+                        <input id="extraField'.$index.'" class="inputbox" name="extraField'.$index.'" style="width: 400px;"  />
                     ';
                     $extraFields[$index]['careersAddHTML'] = '
                         <input id="extraField'.$index.'" class="inputBoxNormal" name="extraField'.$index.'"/>
