@@ -21,6 +21,7 @@ class ExtraFields
         $this->_siteID = $siteID;
         $this->_dataItemType = $dataItemType;
         $this->_db = DatabaseConnection::getInstance();
+error_log(__r('_Yes'));
     }
 
     /**
@@ -598,7 +599,7 @@ class ExtraFields
             {
                 case EXTRA_FIELD_CHECKBOX:
                     $extraFields[$index]['addHTML'] = '
-                        <input type="checkbox" class="inputbox" id="extraFieldCB'.$index.'" name="extraFieldCB'.$index.'" onclick="if (this.checked) {document.getElementById(\'extraField'.$index.'\').value=\'Yes\';} else {document.getElementById(\'extraField'.$index.'\').value=\'No\';}" />
+                        <input type="checkbox" class="inputbox" id="extraFieldCB'.$index.'" name="extraFieldCB'.$index.'" onclick="if (this.checked) {document.getElementById(\'extraField'.$index.'\').value=\''.__('_Yes').'\';} else {document.getElementById(\'extraField'.$index.'\').value=\''.__('_No').'\';}" />
                         <input type="hidden" id="extraField'.$index.'" name="extraField'.$index.'" />
                     ';
                 break;
@@ -714,7 +715,7 @@ class ExtraFields
                           'exportRender'          => 'return ($rsData[\'extra_field_value' . $uniqueIndex . '\'] == \'Yes\' ? \''.__('_Yes').'\' : \''.__('_No').'\');',
                           'sortableColumn'         => 'extra_field_value' . $uniqueIndex,
                           'pagerWidth'  => 45,
-                          'filter' => 'IF (extra_field'.$uniqueIndex.'.value = "Yes", "'.__('_Yes').'", "'.__('_No').'")');
+                          'filter' => 'IF (extra_field'.$uniqueIndex.'.value = "' . __r('_Yes') . '", "'.__('_Yes').'", "'.__('_No').'")');
             break;
 
             case EXTRA_FIELD_DATE:
@@ -785,14 +786,13 @@ class ExtraFields
     public function getValuesForEdit($dataItemID)
     {
         $extraFields = $this->_getValuesWithSettings($dataItemID);
-
         foreach ($extraFields as $index => $data)
         {
             switch ($data['extraFieldType'])
             {
                 case EXTRA_FIELD_CHECKBOX:
                     $extraFields[$index]['editHTML'] = '
-                        <input type="checkbox" class="inputbox" id="extraFieldCB'.$index.'" name="extraFieldCB'.$index.'" ' .($data['value'] == 'Yes' ? 'checked' : '') . ' onclick="if (this.checked) {document.getElementById(\'extraField'.$index.'\').value=\'Yes\';} else {document.getElementById(\'extraField'.$index.'\').value=\'No\';}" />
+                        <input type="checkbox" class="inputbox" id="extraFieldCB'.$index.'" name="extraFieldCB'.$index.'" ' .($data['value'] == __r('_Yes') ? 'checked' : '') . ' onclick="if (this.checked) {document.getElementById(\'extraField'.$index.'\').value=\''.__('_Yes').'\';} else {document.getElementById(\'extraField'.$index.'\').value=\''.__('_No').'\';}" />
                         <input type="hidden" id="extraField'.$index.'" name="extraField'.$index.'" value="'.htmlspecialchars($data['value']).'" />
                     ';
                 break;
