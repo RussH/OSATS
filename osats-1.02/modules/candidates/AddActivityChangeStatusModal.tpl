@@ -126,9 +126,9 @@
                             <option value="<?php echo(ACTIVITY_CALL_TALKED); ?>"><?php _e('Call');?> (<?php _e('Talked');?>)</option>
                             <option value="<?php echo(ACTIVITY_CALL_LVM); ?>"><?php _e('Call');?> (<?php _e('LVM');?>)</option>
                             <option value="<?php echo(ACTIVITY_CALL_MISSED); ?>"><?php _e('Call');?> (<?php _e('Missed');?>)</option>
-                            <option selected="selected" value="<?php echo(ACTIVITY_EMAIL); ?>"><?php _e('E-Mail');?></option>
+                            <option value="<?php echo(ACTIVITY_EMAIL); ?>"><?php _e('E-Mail');?></option>
                             <option value="<?php echo(ACTIVITY_MEETING); ?>"><?php _e('Meeting');?></option>
-                            <option value="<?php echo(ACTIVITY_OTHER); ?>"><?php _e('Other');?></option>
+                            <option selected="selected" value="<?php echo(ACTIVITY_OTHER); ?>"><?php _e('Other');?></option>
                         </select><br />
                         <span id="addActivitySpanB"><?php _e('Activity Notes');?></span><br />
                         <textarea name="activityNote" id="activityNote" cols="50" style="margin-bottom: 4px;" class="inputbox"></textarea>

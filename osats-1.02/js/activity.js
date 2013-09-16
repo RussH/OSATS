@@ -672,6 +672,7 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
         {
             sendEmailSpan.style.display = 'none';
             triggerEmail.checked = false;
+            activityType.value = ACTIVITY_OTHER;
         }
         else
         {
@@ -700,9 +701,11 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
             emailTextOriginal.value = $arrEmail['text'];
             if($arrEmail['emailDisabled'] == 1) {
                 triggerEmail.checked = false;
+                activityType.value = ACTIVITY_OTHER;
                 sendEmailRow.style.display = 'none';
             } else {
                 triggerEmail.checked = true;
+                activityType.value = ACTIVITY_EMAIL;
                 sendEmailRow.style.display = 'inline';
             }
 
@@ -727,6 +730,7 @@ function AS_onStatusChange(statusesArray, jobOrdersArray, regardingSelectID,
         sendEmailSpan.style.display = 'none';
         sendEmailRow.style.display = 'none';
         triggerEmail.checked = false;
+        activityType.value = ACTIVITY_OTHER;
     }
 }
 
