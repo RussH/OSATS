@@ -749,7 +749,7 @@ function replaceAll(templateString, findString, replaceString)
 //FIXME: Document me.
 function getEmailTextOriginal(candidateID, jobOrderID, statusID, sessionCookie)
 {
-    var http = XMLHttpRequest();
+    var http = new XMLHttpRequest();
 
     /* Build HTTP POST data. */
     var POSTData = '';
